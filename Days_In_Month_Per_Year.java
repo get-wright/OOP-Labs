@@ -1,7 +1,6 @@
 import javax.swing.JOptionPane;
 
 public class Days_In_Month_Per_Year {
-
     public static void main(String[] args) {
         while (true) {
             String monthInput = JOptionPane.showInputDialog(null, "Enter the month (name, abbreviation, 3 letters, or number):", "Month Input", JOptionPane.QUESTION_MESSAGE);
