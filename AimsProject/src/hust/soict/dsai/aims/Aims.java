@@ -23,6 +23,7 @@ public class Aims {
 
 		// Add 2 dvds
 		hungOrder.addDigitalVideoDisc(dvd3, dvd4);
+    
 		hungOrder.printOrders();
 
 		System.out.println("Total cost is: ");
