@@ -7,7 +7,7 @@ import hust.soict.dsai.aims.disc.DigitalVideoDisc;
 
 public class Aims {
 	public static void main(String[] args) {
-		Cart minhOrder = new Cart();
+		Cart hungOrder = new Cart();
 
 		//Add DVDs to the cart
 		DigitalVideoDisc dvd1 = new DigitalVideoDisc("Cau chuyen choi do", "Animation", "John Lasseter", 81, 18.95f);
@@ -22,7 +22,8 @@ public class Aims {
 		hungOrder.addDigitalVideoDisc(dvdLList);
 
 		// Add 2 dvds
-		hungOrder.addDigitalVideoDisc(alt3, alt4);
+		hungOrder.addDigitalVideoDisc(dvd3, dvd4);
+    
 		hungOrder.printOrders();
 
 		System.out.println("Total cost is: ");

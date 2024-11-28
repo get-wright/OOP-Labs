@@ -21,11 +21,6 @@ public class StoreTest {
         // Test adding null DVD
         store.addDvd(null);
 
-        // Test adding DVDs
-        store.addDvd(dvd1);
-        store.addDvd(dvd2);
-        store.addDvd(null);
-
         // Test removing DVDs
         System.out.println("\nTesting removeDVD method:");
         store.removeDvd(dvd2);

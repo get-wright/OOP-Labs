@@ -122,8 +122,4 @@ public class Cart {
         }
         return listOrdered;
     }
-
-    public int getQtyOrdered() {
-        return qtyOrdered;
-    }
 }
