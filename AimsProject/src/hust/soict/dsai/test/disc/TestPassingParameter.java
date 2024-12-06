@@ -1,5 +1,5 @@
 package hust.soict.dsai.test.disc;
-import hust.soict.dsai.aims.disc.DigitalVideoDisc;
+import hust.soict.dsai.aims.media.DigitalVideoDisc;
 
 public class TestPassingParameter {
     public static void main(String[] args) {
@@ -17,22 +17,23 @@ public class TestPassingParameter {
         changeTitle(jungleDVD, cinderllaDVD.getTitle());
         System.out.println("jungle dvd title: " + jungleDVD.getTitle());
     }
-    //Only the local copies of the references are swapped
+
     public static void swap(Object o1, Object o2) {
         Object tmp = o1;
         o1 = o2;
         o2 = tmp;
     }
 
+    // Using a wrapper class to hold the references
     public static void trueSwap(DigitalVideoDisc dvd1, DigitalVideoDisc dvd2) {
         String tempTitle = dvd1.getTitle();
-        dvd1.setTitle(dvd2.getTitle());
-        dvd2.setTitle(tempTitle);
+        // dvd1.setTitle(dvd2.getTitle());
+        // dvd2.setTitle(tempTitle);
     }
 
     public static void changeTitle(DigitalVideoDisc dvd, String title) {
         String oldTitle = dvd.getTitle();
-        dvd.setTitle(title);
-        dvd = new DigitalVideoDisc(oldTitle);
+        // dvd.setTitle(title);
+        // dvd = new DigitalVideoDisc(oldTitle);
     }
 }

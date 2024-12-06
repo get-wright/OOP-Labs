@@ -1,34 +1,67 @@
 package hust.soict.dsai.aims.store;
 
-import hust.soict.dsai.aims.disc.DigitalVideoDisc;
 import java.util.ArrayList;
 
+import hust.soict.dsai.aims.media.Media;
+
 public class Store {
-    private ArrayList<DigitalVideoDisc> itemsInStore;
+    private ArrayList<Media> itemsInStore;
 
     public Store() {
-        itemsInStore = new ArrayList<>();
+        itemsInStore = new ArrayList<Media>();
     }
 
-    public void addDvd(DigitalVideoDisc dvd) {
-        if (dvd == null) {
-            System.out.println("Cannot add null DVD.");
-            return;
-        }
-        itemsInStore.add(dvd);
-        System.out.println("DVD added: " + dvd.getTitle());
-    }
+    public void displayItems() {
+		for (Media item: itemsInStore) {
+			System.out.println(item.toString());
+		}
+	}
 
-    public void removeDvd(DigitalVideoDisc dvd) {
-        if (dvd == null) {
-            System.out.println("Cannot remove null DVD.");
-            return;
-        }
-
-        if (itemsInStore.remove(dvd)) {
-            System.out.println("DVD removed: " + dvd.getTitle());
+    public void addMedia(Media media) {
+        if (media != null) {
+            itemsInStore.add(media);
         } else {
-            System.out.println("DVD not found in the store: " + dvd.getTitle());
+            System.out.println("Can not add null item!");
         }
     }
+
+    public void removeMedia(Media media) {
+    	if (itemsInStore.contains(media)) {
+    		itemsInStore.remove(media);
+    	} else {
+    		System.out.println("This item is not in store!");
+    	}
+    }
+
+    public Media searchById(int id) {
+		boolean found = false;
+		for (int i = 0; i < itemsInStore.size(); i++) {
+			if (itemsInStore.get(i).getId() == id) {
+				System.out.println("Media found: " + itemsInStore.get(i).toString());
+				found = true;
+				return itemsInStore.get(i);
+			}
+		}
+
+		if (!found) {
+			System.out.println("No Media found with ID: " + id);
+		}
+        return null;
+	}
+
+	public Media searchByTitle(String title) {
+		boolean found = false;
+		for (int i = 0; i < itemsInStore.size(); i++) {
+			if (itemsInStore.get(i).getTitle().equals(title)) {
+				System.out.println("Media found: " + itemsInStore.get(i).toString());
+				found = true;
+				return itemsInStore.get(i);
+			}
+		}
+
+		if (!found) {
+			System.out.println("No Media found with title: " + title);
+		}
+        return null;
+	}
 }
