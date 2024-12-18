@@ -4,4 +4,4 @@ This repository contains files focused on Object-Oriented Programming Practice (
 
 Tạ Quốc Hùng - 20235593
 
-Updated with Lab04
+`Lab 05` : [release/lab05](https://github.com/get-wright/OOP-Labs/tree/release/lab05)
