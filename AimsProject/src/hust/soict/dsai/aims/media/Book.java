@@ -1,42 +1,43 @@
 package hust.soict.dsai.aims.media;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Book extends Media {
-	private List<String> authors = new ArrayList<String>();
+    
+    private List<String> authors = new ArrayList<String>();
+    
+    // Constructor 
+    public Book(String title) {
+        super(title);
+    }
+    public Book(String title, String category) {
+        super(title, category);
+    }
+    public Book(String title, String category, float cost) {
+        super(title, category, cost);
+    }
 
-	public Book() {
-		// TODO Auto-generated constructor stub
-	}
+    // Add and remove author 
+    public void addAuthor(String authorName) {
+        if (!authors.contains(authorName)) {
+            authors.add(authorName);
+        } else {
+            System.out.println("This author has already been in the list!");
+        }
+    }
 
-	public Book(String title, String category, float cost) {
-		super(new Random().nextInt(1_000_000) + 1, title, category, cost);
-	}
+    public void removeAuthor(String authorName) {
+        if (authors.contains(authorName)) {
+            authors.remove(authorName);
+        } else {
+            System.out.println("No author has been found to remove!");
+        }
+    }
 
-	public void addAuthor(String authorName) {
-		if (!authors.contains(authorName)) {
-			authors.add(authorName);
-		} else {
-			System.out.println("This author already exist!");
-		}
-	}
-
-	public void removeAuthors(String authorName) {
-		if (authors.contains(authorName)) {
-			authors.remove(authorName);
-		} else {
-			System.out.println("This author is not existed!");
-		}
-	}
-
-	public List<String> getAuthors() {
-		return authors;
-	}
-
-	@Override
-	public String toString() {
-		return "Book" + "-" + this.getTitle() + "-" + this.getCategory() + ": " + String.valueOf(this.getCost()) + "$";
-	}
+    @Override
+    public String toString() {
+        return this.getId() + " - Book: " + this.getTitle() +
+                " - Category: " + this.getCategory() +
+                " - Cost: " + this.getCost() + "$";
+    }
 }
