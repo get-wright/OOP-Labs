@@ -1,4 +1,4 @@
-package hust.soict.cybersec.javafx;
+package hust.soict.dsai.javafx;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
