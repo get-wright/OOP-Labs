@@ -1,50 +1,67 @@
 package hust.soict.dsai.aims.screen;
 
-import javax.swing.JFrame;
-import hust.soict.dsai.aims.screen.controller.AddBookScreenController;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import java.awt.Dimension;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import hust.soict.dsai.aims.cart.Cart;
+import hust.soict.dsai.aims.media.Book;
 import hust.soict.dsai.aims.store.Store;
 
-public class AddBookToStoreScreen extends JFrame{
+public class AddBookToStoreScreen extends AddItemToStoreScreen {
+	private JTextField listAuthor;
 
-    private static Store store;
-    
-    public static void main(String[] args) {
-		new AddBookToStoreScreen(store);
+	public AddBookToStoreScreen(Store store, Cart cart, ControllerScreen c) {
+		super(store, cart, c);
+
 	}
+	@Override
+	void updateAdd(JPanel panel) {
+		this.numberInput = 5;
 
-    public AddBookToStoreScreen(Store store) {
+		JLabel listAuthorLabel = new JLabel("Authors(Names are separated by a comma)", JLabel.TRAILING);
+		panel.add(listAuthorLabel);
+		listAuthor = new JTextField(2);
+		listAuthor.setPreferredSize(new Dimension(150, 20));
+		listAuthorLabel.setLabelFor(listAuthor);
+		panel.add(listAuthor);
 
-        super();
+		JButton tes = new JButton("add");
+		tes.setVisible(false);
+		panel.add(tes);
+		panel.setPreferredSize(new Dimension(100, 300));
+		addBtn = new JButton("add");
+		addBtn.addActionListener(e -> {
+			addMediaToStore();
+		});
+		panel.add(addBtn);
+	}	
 
-        AddBookToStoreScreen.store = store;
+	public void addMediaToStore() {
+		String title = this.title.getText();
+		String listAuthor = this.listAuthor.getText();
+		String[] arrayAuthor=listAuthor.split(",");
+		String category = this.category.getText();
+		float cost = Float.parseFloat(this.cost.getText());
+		Book book = new Book(title, category, cost);
+		for(String author:arrayAuthor) {
+		book.addAuthor(author);
+		}
+		this.store.addMedia(book);
+		JOptionPane.showMessageDialog(null, "add Book successfully!");
+		clearTextField();
+		
+	}
+	public void clearTextField(){
+		this.title.setText("");
+		this.listAuthor.setText("");
+		this.cost.setText("");
+		this.category.setText("");
+	}
+	
 
-        JFXPanel fxPanel = new JFXPanel();
-        this.add(fxPanel);
-
-        this.setTitle("Add Book");
-        this.setSize(1024, 768);
-        this.setVisible(true);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/hust/soict/dsai/aims/screen/view/addBook.fxml"));
-                    
-                    AddBookScreenController controller = new AddBookScreenController(store);
-                    loader.setController(controller);
-                    Parent root = loader.load();
-                    fxPanel.setScene(new Scene(root));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-    }
-    
 }

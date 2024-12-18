@@ -1,50 +1,84 @@
 package hust.soict.dsai.aims.screen;
 
-import javax.swing.JFrame;
-import hust.soict.dsai.aims.screen.controller.AddCDScreenController;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import java.awt.Dimension;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import hust.soict.dsai.aims.cart.Cart;
+import hust.soict.dsai.aims.media.CompactDisc;
+import hust.soict.dsai.aims.media.Track;
 import hust.soict.dsai.aims.store.Store;
 
-public class AddCompactDiscToStoreScreen extends JFrame{
+public class AddCompactDiscToStoreScreen extends AddItemToStoreScreen {
+	private JTextField artist;
+	private JTextField listTrack;
 
-    private static Store store;
-    
-    public static void main(String[] args) {
-		new AddCompactDiscToStoreScreen(store);
+	public AddCompactDiscToStoreScreen(Store store, Cart cart, ControllerScreen c) {
+		super(store, cart, c);
+
 	}
 
-    public AddCompactDiscToStoreScreen(Store store) {
+	@Override
+	void updateAdd(JPanel panel) {
+		this.numberInput = 6;
 
-        super();
+		JLabel artistLabel = new JLabel("artist", JLabel.TRAILING);
+		panel.add(artistLabel);
+		artist = new JTextField(2);
+		artist.setPreferredSize(new Dimension(150, 20));
+		artistLabel.setLabelFor(artist);
+		panel.add(artist);
+		JLabel listTrackLabel = new JLabel("List track (each track separated by a comma Ex: track-length)",
+				JLabel.TRAILING);
 
-        AddCompactDiscToStoreScreen.store = store;
+		panel.add(listTrackLabel);
+		listTrack = new JTextField(2);
+		listTrackLabel.setLabelFor(listTrack);
+		panel.add(listTrack);
+		JButton tes = new JButton("add");
+		tes.setVisible(false);
+		panel.add(tes);
+		panel.setPreferredSize(new Dimension(100, 300));
+		addBtn = new JButton("add");
+		addBtn.addActionListener(e -> {
+			addMedia();
+		});
+		panel.add(addBtn);
+	}
 
-        JFXPanel fxPanel = new JFXPanel();
-        this.add(fxPanel);
+	public void addMedia() {
+		String title = this.title.getText();
+		String listTrack = this.listTrack.getText();
+		String category = this.category.getText();
+		float cost = Float.parseFloat(this.cost.getText());
+		String artist = (this.artist.getText());
+		String[] arrayTrack = listTrack.trim().split(",");
 
-        this.setTitle("Add DVD");
-        this.setSize(1024, 768);
-        this.setVisible(true);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/hust/soict/dsai/aims/screen/view/addCD.fxml"));
-                    
-                    AddCDScreenController controller = new AddCDScreenController(store);
-                    loader.setController(controller);
-                    Parent root = loader.load();
-                    fxPanel.setScene(new Scene(root));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+		CompactDisc cd = new CompactDisc(artist, title, category, "", cost);
+		;
+		for (String track : arrayTrack) {
+			String titleTrack = track.split("-")[0].trim();
+			int lengthTrack = Integer.parseInt(track.split("-")[1].trim());
+			Track newTrack = new Track(titleTrack, lengthTrack);
+			cd.addTrack(newTrack);
 
-    }
-    
+		}
+		this.store.addMedia(cd);
+		JOptionPane.showMessageDialog(null, "add CD successfully!");
+		clearTextField();
+
+	}
+
+	public void clearTextField() {
+		this.title.setText("");
+		this.listTrack.setText("");
+		this.cost.setText("");
+		this.artist.setText("");
+		this.category.setText("");
+	}
+
 }

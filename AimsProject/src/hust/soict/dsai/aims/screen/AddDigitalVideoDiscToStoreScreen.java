@@ -1,51 +1,69 @@
 package hust.soict.dsai.aims.screen;
 
-import javax.swing.JFrame;
-import hust.soict.dsai.aims.screen.controller.AddDVDScreenController;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import java.awt.Dimension;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import hust.soict.dsai.aims.cart.Cart;
+import hust.soict.dsai.aims.media.DigitalVideoDisc;
 import hust.soict.dsai.aims.store.Store;
 
-public class AddDigitalVideoDiscToStoreScreen extends JFrame{
+public class AddDigitalVideoDiscToStoreScreen extends AddItemToStoreScreen {
+	private JTextField director;
+	private JTextField length;
 
-    private static Store store;
-    
-    public static void main(String[] args) {
-		new AddDigitalVideoDiscToStoreScreen(store);
+	public AddDigitalVideoDiscToStoreScreen(Store store, Cart cart, ControllerScreen c) {
+		super(store, cart, c);
+
+	}
+	@Override
+	void updateAdd(JPanel panel) {
+		this.numberInput = 6;
+		JLabel directorLabel = new JLabel("director", JLabel.TRAILING);
+		panel.add(directorLabel);
+		director = new JTextField(2);
+		director.setPreferredSize(new Dimension(150, 20));
+		directorLabel.setLabelFor(director);
+		panel.add(director);
+		JLabel lengthLabel = new JLabel("length", JLabel.TRAILING);
+		panel.add(lengthLabel);
+		length = new JTextField(2);
+		lengthLabel.setLabelFor(length);
+		panel.add(length);
+		JButton tes = new JButton("add");
+		tes.setVisible(false);
+		panel.add(tes);
+		panel.setPreferredSize(new Dimension(100, 300));
+		addBtn = new JButton("add");
+		addBtn.addActionListener(e -> {
+			addMedia();
+		});
+		panel.add(addBtn);
 	}
 
-    public AddDigitalVideoDiscToStoreScreen(Store store) {
+	public void addMedia() {
+		String title = this.title.getText();
+		String director = this.director.getText();
+		String category = this.category.getText();
+		float cost = Float.parseFloat(this.cost.getText());
+		int length = Integer.parseInt(this.length.getText());
+		DigitalVideoDisc dvd = new DigitalVideoDisc(title, category, director, length, cost);
+		this.store.addMedia(dvd);
+		JOptionPane.showMessageDialog(null, "add DVD successfully!");
+		clearTextField();
+		
+	}
+	public void clearTextField(){
+		this.title.setText("");
+		this.director.setText("");
+		this.cost.setText("");
+		this.length.setText("");
+		this.category.setText("");
+	}
+	
 
-        super();
-
-        AddDigitalVideoDiscToStoreScreen.store = store;
-
-        JFXPanel fxPanel = new JFXPanel();
-        this.add(fxPanel);
-
-        this.setTitle("Add DVD");
-        this.setSize(1024, 768);
-        this.setVisible(true);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/hust/soict/dsai/aims/screen/view/addDVD.fxml"));
-                    
-                    AddDVDScreenController controller = new AddDVDScreenController(store);
-                    loader.setController(controller);
-                    Parent root = loader.load();
-                    fxPanel.setScene(new Scene(root));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-    }
-    
 }

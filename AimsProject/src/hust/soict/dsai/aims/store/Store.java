@@ -1,53 +1,71 @@
 package hust.soict.dsai.aims.store;
+
 import java.util.ArrayList;
 
 import hust.soict.dsai.aims.media.Media;
 
 public class Store {
+    private ArrayList<Media> itemsInStore;
 
-    private ArrayList<Media> itemsInStore = new ArrayList<Media>();
+    public Store() {
+        itemsInStore = new ArrayList<Media>();
+    }
 
-    public ArrayList<Media> getItemsInStore() {
+	public ArrayList<Media> getItemsInStore() {
 		return itemsInStore;
 	}
 
+    public void displayItems() {
+		for (Media item: itemsInStore) {
+			System.out.println(item.toString());
+		}
+	}
 
-    // Add and remove media from the store
     public void addMedia(Media media) {
-        if (itemsInStore.contains(media)) {
-            System.out.println("The media " + media.getTitle() + " is already in the store!");
-        } else {
+        if (media != null) {
             itemsInStore.add(media);
-            System.out.println("The media " + media.getTitle() + " has been added to the store.");
+        } else {
+            System.out.println("Can not add null item!");
         }
     }
+
     public void removeMedia(Media media) {
-        if (itemsInStore.remove(media)) {
-            System.out.println("The media " + media.getTitle() + " has been removed from the store.");
-        } else {
-            System.out.println("The media " + media.getTitle() + " is not in the store!");
-        }
+    	if (itemsInStore.contains(media)) {
+    		itemsInStore.remove(media);
+    	} else {
+    		System.out.println("This item is not in store!");
+    	}
     }
 
-    // Print the store
-    public void print() {
-        if (itemsInStore.size() == 0) {
-            System.out.println("The store is empty!");
-        } else {
-            System.out.println("********************STORE INVENTORY********************");
-            for (Media media : itemsInStore) {
-                System.out.println(media);
-            }
-            System.out.println("********************************************************");
-        }
-    }
-
-    public Media search(String title) {
-		for (Media media : itemsInStore) {
-			if (media.getTitle().equals(title)) {
-				return media;
+    public Media searchById(int id) {
+		boolean found = false;
+		for (int i = 0; i < itemsInStore.size(); i++) {
+			if (itemsInStore.get(i).getId() == id) {
+				System.out.println("Media found: " + itemsInStore.get(i).toString());
+				found = true;
+				return itemsInStore.get(i);
 			}
 		}
-		return null;
+
+		if (!found) {
+			System.out.println("No Media found with ID: " + id);
+		}
+        return null;
+	}
+
+	public Media searchByTitle(String title) {
+		boolean found = false;
+		for (int i = 0; i < itemsInStore.size(); i++) {
+			if (itemsInStore.get(i).getTitle().equals(title)) {
+				System.out.println("Media found: " + itemsInStore.get(i).toString());
+				found = true;
+				return itemsInStore.get(i);
+			}
+		}
+
+		if (!found) {
+			System.out.println("No Media found with title: " + title);
+		}
+        return null;
 	}
 }

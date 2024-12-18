@@ -1,103 +1,71 @@
 package hust.soict.dsai.aims.media;
 
-import java.time.Duration;
 import java.util.Comparator;
-
-import hust.soict.dsai.aims.exception.PlayerException;
+import java.util.Random;
 
 public abstract class Media implements Comparable<Media> {
+	private int id;
+	private String title;
+	private String category;
+	private float cost;
 
-    public static final Comparator<Media> COMPARE_BY_TITLE_COST = new MediaComparatorByTitleCost();
+	public static final Comparator<Media> COMPARE_BY_TITLE_COST = new MediaComparatorByTitleCost();
     public static final Comparator<Media> COMPARE_BY_COST_TITLE = new MediaComparatorByCostTitle();
 
-    
-    private static int nbMedia = 0;
-    private int id;
+	public Media() {
+		this.id = new Random().nextInt(1_000_000) + 1;
+		this.title = "";
+		this.category = "";
+		this.cost = 0.0f;
+	}
 
-    private String title;
-    private String category;
-    private float cost;
+	public Media(int id, String title, String category, float cost) {
+		this.id = id;
+		this.title = title;
+		this.category = category;
+		this.cost = cost;
+	}
 
-    // Constructor 
-    public Media(String title) {
-        this.title = title;
-		this.id = ++nbMedia;
-    }
-    public Media(String title, String category) {
-        this.title = title;
-        this.category = category;
-        this.id = ++nbMedia;
-    }
-    public Media(String title, String category, float cost) {
-        this.title = title;
-        this.category = category;
-        this.cost = cost;
-        this.id = ++nbMedia;
-    }
-    
-    // Getter method
-    public int getId() {
-        return id;
-    }
-    public String getTitle() {
-        return title;
-    }
-    public String getCategory() {
-        return category;
-    }
-    public float getCost() {
-        return cost;
-    }
+	public int getId() {
+		return id;
+	}
 
-    // Setter method
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    
-    // Check is title match
-    public boolean isMatch(String title) {
-        return this.getTitle().toLowerCase().contains(title.toLowerCase());
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void play() {
-        System.out.println("Playing media");
-    }
-    
-    public String playGUI() throws PlayerException {
-        return "Playing media";
-    }
+	public String getCategory() {
+		return category;
+	}
 
-    public String formatDuration(int durationInSeconds) {
-        Duration duration = Duration.ofSeconds(durationInSeconds);
-        return String.format("%02d:%02d", duration.toMinutes(), duration.minusMinutes(duration.toMinutes()).getSeconds());
-    }
-    
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (!(obj instanceof Media)) {
-            return false;
-        }
-        return ((Media)obj).getTitle() == this.getTitle();
-    }
+	public float getCost() {
+		return cost;
+	}
 
     @Override
-    public String toString() {
-        return "Media: " + this.getTitle() +
-                " - Category: " + this.getCategory() +
-                " - Cost: " + this.getCost() + "$";
-    }
+	public boolean equals(Object o) {
+		if (o instanceof Media) {
+			Media media = (Media) o;
+			if (this.title.equals(media.title)) {
+				return true;
+			}else {
+				return false;
+			}
+		}
+		return false;
+	}
 
-    // Answer for the second question
-    @Override
+	@Override
+	public abstract String toString();
+
+	// Implement compareTo Title then Cost
+	@Override
     public int compareTo(Media other) {
-        int titleComparison = this.getTitle().compareTo(other.getTitle());
+        int titleComparison = this.title.compareTo(other.title);
         if (titleComparison != 0) {
             return titleComparison;
-        } else {
-            return Double.compare(this.getCost(), other.getCost());
         }
+        // If titles are the same, compare by cost (higher cost first)
+        return Double.compare(other.cost, this.cost);
     }
 }
